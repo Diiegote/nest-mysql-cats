@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatsModule } from './cats/cats.module';
 import { BreedsModule } from './breeds/breeds.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -13,7 +15,7 @@ import { BreedsModule } from './breeds/breeds.module';
     database: 'nest-crud-mysql',
     autoLoadEntities: true, // Para que cree automaticamente las entidades en la base de datos, sin tener que pasarle manualmente las entidades que tiene que crear. Esto viene a remplazar la opcion entiti: [].
     synchronize: true,
-  }), CatsModule, BreedsModule],
+  }), CatsModule, BreedsModule, UsersModule, AuthModule],
   controllers: [],
   providers: [],
 })

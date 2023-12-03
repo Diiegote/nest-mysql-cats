@@ -16,7 +16,7 @@ export class BreedsService {
   }
 
   async findAll() {
-    return await this.breedReposirory.find();
+    return await this.breedReposirory.find({ relations: ['cats'] });
   }
 
   findOne(id: number) {

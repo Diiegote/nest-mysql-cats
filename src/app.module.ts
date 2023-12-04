@@ -4,18 +4,28 @@ import { CatsModule } from './cats/cats.module';
 import { BreedsModule } from './breeds/breeds.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '',
-    database: 'nest-crud-mysql',
-    autoLoadEntities: true, // Para que cree automaticamente las entidades en la base de datos, sin tener que pasarle manualmente las entidades que tiene que crear. Esto viene a remplazar la opcion entiti: [].
-    synchronize: true,
-  }), CatsModule, BreedsModule, UsersModule, AuthModule],
+  imports: [
+
+    ConfigModule.forRoot({}),
+
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
+    CatsModule,
+    BreedsModule,
+    UsersModule,
+    AuthModule
+  ],
   controllers: [],
   providers: [],
 })

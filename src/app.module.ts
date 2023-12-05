@@ -9,7 +9,9 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
 
-    ConfigModule.forRoot({}),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
 
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -20,6 +22,15 @@ import { ConfigModule } from '@nestjs/config';
       database: process.env.DB_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: process.env.DB_SSL === 'true',
+      extra: {
+        ssl:
+          process.env.DB_SSL === 'true'
+            ? {
+              rejectUnauthorized: false,
+            }
+            : null
+      }
     }),
     CatsModule,
     BreedsModule,

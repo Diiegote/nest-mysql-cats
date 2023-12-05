@@ -14,17 +14,21 @@ export class AuthService {
    ) { }
 
    async register({ name, email, password }: RegisterDto) {
-      const user = await this.usersService.findOneByEmail(email);
+      try {
+         const user = await this.usersService.findOneByEmail(email);
 
-      if (user) throw new BadRequestException("user already exists");
+         if (user) throw new BadRequestException("user already exists");
 
-      await this.usersService.create({
-         name,
-         email,
-         password: await bcryptjs.hash(password, 10)
-      });
+         await this.usersService.create({
+            name,
+            email,
+            password: await bcryptjs.hash(password, 10)
+         });
 
-      return { name, email };
+         return { name, email };
+      } catch (error) {
+         console.error(error);
+      }
    };
 
 

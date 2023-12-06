@@ -6,13 +6,22 @@ import { Auth } from '../auth/decorators/auth.decorators';
 import { Role } from '../common/enums/rol.enum';
 import { ActiveUser } from '../common/decorators/active-user.decorator';
 import { UserActiveInterface } from '../common/interfaces/user-active.interface';
+import { ApiBearerAuth, ApiResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
+
+@ApiTags('Cats')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({
+  description: 'Unauthorized Bearer Auth',
+})
 @Auth(Role.USER)
 @Controller('cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) { }
 
   @Post()
+  @ApiResponse({ status: 201, description: 'The record has been successfully created.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
   create(@Body() createCatDto: CreateCatDto, @ActiveUser() user: UserActiveInterface) {
     return this.catsService.create(createCatDto, user);
   }
